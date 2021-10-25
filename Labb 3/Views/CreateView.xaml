@@ -30,18 +30,18 @@
             Text="Create" />
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Label Content="Quiz Name:" />
-            <TextBox Text="{Binding QuizName}" />
+            <TextBox Text="{Binding QuizName, UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Stretch"
-                Command="{Binding AddQuizCommand}"
+                Command="{Binding AddQuizCommand, UpdateSourceTrigger=PropertyChanged}"
                 Content="Create Quiz" />
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1">
             <Label Content="Statement:" />
-            <TextBox Text="{Binding Statement}" />
+            <TextBox Text="{Binding Statement, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="Theme:" />
-            <TextBox />
+            <TextBox Text="{Binding Theme, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1">
             <Label Content="Answer 1:" />
@@ -55,5 +55,9 @@
                       SelectedIndex="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"/>
             <Button HorizontalAlignment="Left" Content="Add Question" Command ="{Binding AddQuestionCommand}" />
         </StackPanel>
+        <ListView Grid.Row="2" Grid.RowSpan="2" Grid.Column="2"
+                  DisplayMemberPath="Statement"
+                  ItemsSource="{Binding CurrentQuizQuestions , UpdateSourceTrigger=PropertyChanged}" 
+                  />
     </Grid>
 </UserControl>

@@ -32,7 +32,7 @@ namespace Labb_3
 
             MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel(_navigationManager)
+                DataContext = new MainViewModel(_quizManager, _navigationManager )
             };
             MainWindow.Show();
 

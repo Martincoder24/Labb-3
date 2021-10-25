@@ -15,7 +15,14 @@ namespace Labb_3.Managers
         public List<Quiz> Quizzes
         {
             get => _quizzes; 
-            set { _quizzes = value; }
+            set => _quizzes = value; 
+        }
+        private List<Question> _questions = new List<Question>();
+
+        public List<Question> Questions
+        {
+            get => _questions; 
+            set => _questions= value; 
         }
 
     }

@@ -9,6 +9,8 @@ namespace Labb_3.ViewModels
 {
     public class EditViewModel : ObservableObject
     {
-        //Todo Denna vymodellen ska vara liknande Creat-vymodellen samt att den ska kunna ta bort o redigera content i befintliga Quizzes
+        //Todo Denna vymodellen ska vara liknande Creat-vymodellen samt att den ska kunna ta bort o redigera content i befintliga Quizzes.
+
+        //Kunna välja ett från ett befintligt existerande quiz
     }
 }

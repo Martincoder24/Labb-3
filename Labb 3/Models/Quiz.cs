@@ -20,6 +20,8 @@ namespace Labb_3.Models
         public string Title
         {
             get => _title;
+            set => _title = value;
+            
         }
 
         public Quiz(ICollection<Question> questions, string title)

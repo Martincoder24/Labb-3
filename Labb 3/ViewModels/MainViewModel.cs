@@ -14,7 +14,7 @@ namespace Labb_3.ViewModels
 
         public ObservableObject CurrentViewModel => _navigationManager.CurrentViewModel;
 
-        public MainViewModel(NavigationManager navigationManager)
+        public MainViewModel(QuizManager quizManager, NavigationManager navigationManager)
         {
             _navigationManager = navigationManager;
 
