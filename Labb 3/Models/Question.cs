@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Labb_3.Models
 {
@@ -12,31 +13,32 @@ namespace Labb_3.Models
 
         public string Statement
         {
-            get => _statement; 
-            
+            get => _statement;
+            set => _statement = value;
+
         }
 
         private string[] _answers;
 
         public string[] Answers
         {
-            get => _answers; 
-            
+            get => _answers;
+            set => _answers = value;
         }
 
-        private readonly int _correctAnswer;
+        private int _correctAnswer;
 
         public int CorrectAnswer
         {
-            get => _correctAnswer; 
-            
+            get => _correctAnswer;
+            set => _correctAnswer = value;
         }
         private string _theme;
 
         public string Theme
         {
             get => _theme;
-            
+            set => _theme = value;
         }
 
 

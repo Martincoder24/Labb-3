@@ -20,8 +20,11 @@
                 <DataTemplate DataType="{x:Type vms:EditViewModel}">
                     <views:EditView />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vms:PlayViewModel}">
-                    <views:PlayView />
+                <DataTemplate DataType="{x:Type vms:QuizToPlayViewModel}">
+                    <views:QuizToPlayView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vms:PlayModeViewModel}">
+                    <views:PlayModeView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

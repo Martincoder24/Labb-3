@@ -16,9 +16,8 @@ namespace Labb_3.ViewModels
 {
     public class CreateViewModel: ObservableObject
     {
-        private QuizManager _quizManager;
-        private Question _question;
-        private NavigationManager _navigationManager;
+        private readonly QuizManager _quizManager;
+        private readonly NavigationManager _navigationManager;
 
 
         #region Propeties
@@ -31,7 +30,8 @@ namespace Labb_3.ViewModels
             set
             {
                 SetProperty(ref _quizName, value);
-                
+                AddQuizCommand.NotifyCanExecuteChanged();
+
             } 
         }
         private string _statement;
@@ -39,7 +39,11 @@ namespace Labb_3.ViewModels
         public string Statement
         {
             get => _statement;
-            set => SetProperty(ref _statement, value);
+            set
+            {
+                SetProperty(ref _statement, value);
+                AddQuestionCommand.NotifyCanExecuteChanged();
+            } 
         }
 
         private string _answer1;
@@ -88,33 +92,38 @@ namespace Labb_3.ViewModels
         public int CorrectAnswer
         {
             get => _correctAnswer;
-            set => SetProperty(ref _correctAnswer, value);
-        }
-        private Quiz _createdQuiz = new Quiz(new List<Question>(), "TEMP");
-
-        public Quiz CreatedQuiz
-        {
-            get => _createdQuiz;
             set
             {
-                SetProperty(ref _createdQuiz, value);
-                if (_currentQuizQuestions != null && _createdQuiz != null)
-                {
-                    _currentQuizQuestions.Clear();
-                    foreach (var question in CreatedQuiz.Questions)
-                    {
-                        _currentQuizQuestions.Add(question);
-                    }
-                }
+                SetProperty(ref _correctAnswer, value);
+                AddQuestionCommand.NotifyCanExecuteChanged();
+            }
+            
+        }
+        private Quiz _currentQuiz = new Quiz(new ObservableCollection<Question>(), "TEMP");
+
+        public Quiz CurrentQuiz
+        {
+            get => _currentQuiz;
+            set
+            {
+                SetProperty(ref _currentQuiz, value);
+                //if (_currentQuiz.Questions != null && _currentQuiz != null)
+                //{
+                //    _currentQuiz.Questions.Clear();
+                //    foreach (var question in CurrentQuiz.Questions)
+                //    {
+                //        _currentQuiz.Questions.Add(question);
+                //    }
+                //}
             } 
         }
-        private ObservableCollection<Question> _currentQuizQuestions = new();
+        //private ObservableCollection<Question> _currentQuizQuestions = new();
 
-        public ObservableCollection<Question> CurrentQuizQuestions
-        {
-            get => _currentQuizQuestions;
-            set => SetProperty(ref _currentQuizQuestions, value);
-        }
+        //public ObservableCollection<Question> CurrentQuizQuestions
+        //{
+        //    get => _currentQuizQuestions;
+        //    set => SetProperty(ref _currentQuizQuestions, value);
+        //}
 
 
         private ObservableCollection<string> _allAnswers = new ObservableCollection<string>() { "", "", "" };
@@ -123,28 +132,34 @@ namespace Labb_3.ViewModels
         {
             get => _allAnswers;
             set => OnPropertyChanged(nameof(AllAnswers));
-        } 
+        }
+
+        
         #endregion
 
         //Skapa en Command-bindning för "create quiz" knappen som skall skapa en quiz-list<Questions>
         public RelayCommand AddQuizCommand { get;}
         public RelayCommand AddQuestionCommand { get; }
-        
+
+        public RelayCommand ReturnCommand { get; }
+
         //Skapa ett nytt quiz som skall läggas till i min QuizManager
-        public void CreateQuiz()
+        #region CreateQuiz Command-metoder
+        private void CreateQuiz()
         {
             if (_quizName != null)
             {
-                CreatedQuiz = new Quiz(new List<Question>(), _quizName);
-                CreatedQuiz.Title = QuizName;
-                _quizManager.Quizzes.Add(CreatedQuiz);
+                CurrentQuiz = new Quiz(new ObservableCollection<Question>(), _quizName);
+                _quizManager.Quizzes.Add(CurrentQuiz);
+                //Här skall jag spara min fil asynkront
+                _quizManager.SaveQuizzes();
                 //Ändrar så att när man skrivit in ett quiz o sparat så måste man meddela till RelayCommandet
                 AddQuizCommand.NotifyCanExecuteChanged();
 
             }
         }
         //Lägg in en sats här för att kolla om en nuvarande lista heter likadan.
-        public bool CanCreateQuiz()
+        private bool CanCreateQuiz()
         {
 
             if (_quizManager.Quizzes.FirstOrDefault(q => q.Title == QuizName) == null)
@@ -157,50 +172,75 @@ namespace Labb_3.ViewModels
             }
 
         }
+        #endregion
         //Lägga till en fråga i det befintliga quizzet
         //_correctAnswer ska vara en selected item i min lista med allAnswers
-        public void AddQuestionToQuiz()
+        #region AddQuestion Command-metoder
+        private void AddQuestionToQuiz()
         {
-            var answers = new[] {_answer1, _answer2, _answer3};
-            _question = new Question(_statement, answers, _correctAnswer, _theme);
-            CreatedQuiz.Questions.Add(_question);
-
-            //Uppdaterar min property
-            var tempAdd = CreatedQuiz;
-            CreatedQuiz = tempAdd;
-        }
-        //Todo Sätt en if-sats som kollar om alla fält för en question är ifyllda d.v.s != null eller samma som en befintlig fråga
-        public bool CanAddQuestion()
-        {
-            if (_quizManager.Quizzes.FirstOrDefault(q=>q.Questions == CurrentQuizQuestions) == null)
+            var answers = new[] { _answer1, _answer2, _answer3 };
+            var question = new Question(_statement, answers, _correctAnswer, _theme);
+            CurrentQuiz.AddQuestion(Statement, answers, CorrectAnswer, Theme);
+            //CreatedQuiz.Questions.Add(question);
+            //Addera temat i en lista av teman för quizzet
+            if (!CurrentQuiz.Themes.Contains(question.Theme))
             {
-                return true;
+                CurrentQuiz.Themes.Add(question.Theme);
+            }
+
+            _quizManager.SaveQuizzes();
+            //Uppdaterar min property
+            var tempAdd = CurrentQuiz;
+            CurrentQuiz = tempAdd;
+            AddQuestionCommand.NotifyCanExecuteChanged();
+        }
+
+        //Denna skall kolla alla statements i CreatedQUizQuestions och jämföra om ett är = Statement
+        private bool CanAddQuestion()
+        {
+            if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == Statement) == null)
+            {
+                return !string.IsNullOrEmpty(Statement);
             }
             else
             {
                 return false;
             }
+
+        }
+        #endregion
+        private void ReturnButton()
+        {
+            _navigationManager.CurrentViewModel = new StartViewModel(_quizManager, _navigationManager);
         }
 
         public CreateViewModel(QuizManager quizManager, NavigationManager navigationManager)
         {
-            _quizManager = quizManager;
-            AddQuizCommand = new(CreateQuiz, CanCreateQuiz);
-            AddQuestionCommand = new (AddQuestionToQuiz, CanAddQuestion);
-            PropertyChanged += OnViewModelPropertyChanged;
+           _quizManager = quizManager;
+           _navigationManager = navigationManager;
+           AddQuizCommand = new(CreateQuiz, CanCreateQuiz);
+           AddQuestionCommand = new (AddQuestionToQuiz, CanAddQuestion);
+           ReturnCommand = new RelayCommand(ReturnButton);
+           PropertyChanged += OnViewModelPropertyChanged;
         }
 
-        public void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+       
+
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(CreatedQuiz) || e.PropertyName == nameof(QuizName))
+            if (e.PropertyName == nameof(CurrentQuiz) || e.PropertyName == nameof(QuizName) 
+               )
             {
                 AddQuizCommand.NotifyCanExecuteChanged();
+            }
+            if (e.PropertyName == nameof(CurrentQuiz) || e.PropertyName == nameof(QuizName)
+            )
+            {
                 AddQuestionCommand.NotifyCanExecuteChanged();
             }
         }
         //När Quizet är skapat så skall submit-knappen bli utgråad och namnet på quiz-listan skall stå kvar.
-
-
+        
         //Skapa en bindning till frågan och dess svar. Samt att markera vilket alternativ som är rätt svar.
         //Lägg sedan till en bindning för tema på frågan också
         //Skapa ett command  för en knapp som skapar frågan m.a.p bindningen till frågor och svar.

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Labb_3.Views
 {
     /// <summary>
-    /// Interaction logic for PlayView.xaml
+    /// Interaction logic for QuizToPlayView.xaml
     /// </summary>
-    public partial class PlayView : UserControl
+    public partial class QuizToPlayView : UserControl
     {
-        public PlayView()
+        public QuizToPlayView()
         {
             InitializeComponent();
         }

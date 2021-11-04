@@ -17,6 +17,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -41,7 +42,7 @@
             <Label Content="Statement:" />
             <TextBox Text="{Binding Statement, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="Theme:" />
-            <TextBox Text="{Binding Theme, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Theme, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1">
             <Label Content="Answer 1:" />
@@ -51,13 +52,31 @@
             <Label Content="Answer 3:" />
             <TextBox Text="{Binding Answer3, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="Correct Answer:" />
-            <ComboBox ItemsSource="{Binding AllAnswers, UpdateSourceTrigger=PropertyChanged}" 
-                      SelectedIndex="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button HorizontalAlignment="Left" Content="Add Question" Command ="{Binding AddQuestionCommand}" />
+            <ComboBox ItemsSource="{Binding AllAnswers, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}" />
+            <Button
+                HorizontalAlignment="Left"
+                Command="{Binding AddQuestionCommand}"
+                Content="Add Question" />
         </StackPanel>
-        <ListView Grid.Row="2" Grid.RowSpan="2" Grid.Column="2"
-                  DisplayMemberPath="Statement"
-                  ItemsSource="{Binding CurrentQuizQuestions , UpdateSourceTrigger=PropertyChanged}" 
-                  />
+        <StackPanel />
+        <ListView
+            Grid.Row="2"
+            Grid.RowSpan="2"
+            Grid.Column="2"
+            DisplayMemberPath="Statement"
+            ItemsSource="{Binding CurrentQuiz.Questions, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="2"
+            VerticalAlignment="Bottom"
+            Text="Current Quiz questions:" />
+        <Button
+            Grid.Row="3"
+            Grid.Column="3"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Command="{Binding ReturnCommand}"
+            Content="Return" />
     </Grid>
 </UserControl>
