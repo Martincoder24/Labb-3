@@ -129,7 +129,7 @@ namespace Labb_3.ViewModels
         {
             //Kontrollerar varje fråga om det matchar nåt tema i _themesOfChoice och om det inte matchar så ta bort dom til dett uppdaterade quizzet 
 
-            var questionList = SelectedQuiz.Questions.ToList().Where(q => !_themesOfChoice.Any(t => t == q.Theme));
+            var questionList = SelectedQuiz.Questions.ToList().Where(q => _themesOfChoice.Any(t => t == q.Theme)).ToList();
             var updatedQuiz = new Quiz(questionList.ToList(), SelectedQuiz.Title);
 
             _navigationManager.CurrentViewModel = new PlayModeViewModel(_quizManager, _navigationManager, updatedQuiz);

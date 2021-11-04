@@ -23,7 +23,6 @@ namespace Labb_3.Models
         {
             get => _title;
             set => _title = value;
-            
         }
 
         private ObservableCollection<string> _themes;
@@ -41,31 +40,35 @@ namespace Labb_3.Models
             _themes = new ObservableCollection<string>();
         }
 
-        //Todo Gör denna i min PlayView
+        
         public Question GetRandomQuestion()
         {
+            //Den ska bara kolla alla frågor som har boolen IsEnabled som inte är kollad.
+            var questionList = Questions.Where(q => q.IsAsked == false).ToList();
             //Ger mig indexet på antal frågor i mitt quiz
-            int maxIndex = Questions.Count();
+            int maxIndex = questionList.Count();
             //randomgeneratorn ska ge mig ett index i quizzet
             var randQ = new Random();
-            var randIndex = randQ.Next(0, maxIndex);
-            List<Question> questionList = new List<Question>(Questions);
+            var randQuestion = questionList[randQ.Next(0, maxIndex)];
+            randQuestion.IsAsked = true;
 
-            return questionList[randIndex];
+            return randQuestion;
         }
 
         //Här lägger jag in en ny fråga i AddQuestionCommandet
-        public void AddQuestion(string statement, string[] answer, int correctAnswer, string theme)
+        public void AddQuestion(string statement, string[] answer, int correctAnswer, string theme, string imagePath)
         {
-            var question = new Question(statement, answer, correctAnswer, theme);
+            var question = new Question(statement, answer, correctAnswer, theme, imagePath);
             Questions.Add(question);
 
         }
         //Jag anropar denna metoden för att Ta bort indexet av frågan jag skickar in.
         public void RemoveQuestion(int index)
         {
-
-            Questions.ToList().RemoveAt(index);
+            //Todo Fixa Remove-question
+            List<Question> tempList = Questions.ToList();
+            var tempQuestion = tempList[index];
+            Questions.Remove(tempQuestion);
         }
 
        

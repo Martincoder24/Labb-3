@@ -11,6 +11,7 @@ using Labb_3.Managers;
 using Labb_3.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Win32;
 
 namespace Labb_3.ViewModels
 {
@@ -33,7 +34,18 @@ namespace Labb_3.ViewModels
             set
             {
                 SetProperty(ref _currentQuiz, value);
+                AddQuestionCommand.NotifyCanExecuteChanged();
+                OnPropertyChanged(nameof(CurrentQuiz.Questions));
+                QuizQuestions = new ObservableCollection<Question>(CurrentQuiz.Questions);
             }
+        }
+
+        private ObservableCollection<Question> _quizQuestions = new ObservableCollection<Question>();
+
+        public ObservableCollection<Question> QuizQuestions
+        {
+            get => _quizQuestions;
+            set => SetProperty(ref _quizQuestions , value);
         }
 
         private Question _selectedQuestion;
@@ -44,19 +56,114 @@ namespace Labb_3.ViewModels
             set
             {
                 SetProperty(ref _selectedQuestion, value);
+                RemoveQuestionCommand.NotifyCanExecuteChanged();
+                //Set alla bindningsfält till SelectedQuestion
+                if (SelectedQuestion != null)
+                {
+                    Statement = SelectedQuestion.Statement;
+                    Answer1 = SelectedQuestion.Answers[0];
+                    Answer2 = SelectedQuestion.Answers[1];
+                    Answer3 = SelectedQuestion.Answers[2];
+                    CorrectAnswer = SelectedQuestion.CorrectAnswer;
+                    Theme = SelectedQuestion.Theme;
+                    ImagePath = SelectedQuestion.ImagePath;
+                }
+                
+
             }
         }
+
         public ObservableCollection<Quiz> ListOfQuizzes => new(_quizManager.Quizzes);
 
-        
-       // public ObservableCollection<Question> CurrentQuizQuestions => new(CurrentQuiz.Questions);
+        private string _imagePath;
 
+        public string ImagePath
+        {
+            get => _imagePath;
+            set => SetProperty(ref _imagePath, value);
+        }
+
+        //Todo lägg in alla properties för SelectedQuestion
+
+        //statement
+        private string _statement;
+
+        public string Statement
+        {
+            get => _statement;
+            set => SetProperty(ref _statement, value);
+        }
+
+        //answers
+        private string _answer1;
+
+        public string Answer1
+        {
+            get => _answer1;
+            set
+            {
+                SetProperty(ref _answer1, value);
+                AllAnswers[0] = value;
+            }
+        }
+        private string _answer2;
+
+        public string Answer2
+        {
+            get => _answer2;
+            set
+            {
+                SetProperty(ref _answer2, value);
+                AllAnswers[1] = _answer2;
+            }
+        }
+        private string _answer3;
+
+        public string Answer3
+        {
+            get => _answer3;
+            set
+            {
+                SetProperty(ref _answer3, value);
+                AllAnswers[2] = _answer3;
+            }
+        }
+
+        private ObservableCollection<string> _allAnswers = new ObservableCollection<string>() { "", "", "" };
+
+        public ObservableCollection<string> AllAnswers
+        {
+            get => _allAnswers;
+            set => SetProperty(ref _allAnswers , value);
+        }
+      //theme
+        private string _theme;
+
+        public string Theme
+        {
+            get => _theme;
+            set => SetProperty(ref _theme, value);
+        }
+        //correctAnswer
+        private int _correctAnswer;
+
+        public int CorrectAnswer
+        {
+            get => _correctAnswer;
+            set
+            {
+                SetProperty(ref _correctAnswer, value);
+                AddQuestionCommand.NotifyCanExecuteChanged();
+            }
+
+        }
         #endregion
 
         public RelayCommand EditQuestionCommand { get; }
         public RelayCommand AddQuestionCommand { get; }
         public RelayCommand RemoveQuestionCommand { get; }
         public RelayCommand ReturnCommand { get; }
+        public RelayCommand AddImageCommand { get; }
 
         public EditViewModel(QuizManager quizManager, NavigationManager navigationManager)
         {
@@ -65,6 +172,7 @@ namespace Labb_3.ViewModels
             EditQuestionCommand = new RelayCommand(EditQuestion, CanEditQuestion);
             AddQuestionCommand = new RelayCommand(AddQuestion, CanAddQuestion);
             RemoveQuestionCommand = new RelayCommand(RemoveQuestion, CanRemoveQuestion);
+            AddImageCommand = new RelayCommand(AddImageToQuestion);
             ReturnCommand = new RelayCommand(ReturnButton);
             //PropertyChanged += OnViewModelPropertyChanged;
 
@@ -73,30 +181,37 @@ namespace Labb_3.ViewModels
         #region EditCommand metoder
         private void EditQuestion()
         {
+            SelectedQuestion.Statement = Statement;
+            SelectedQuestion.Answers[0] = Answer1;
+            SelectedQuestion.Answers[1] = Answer2;
+            SelectedQuestion.Answers[2] = Answer3;
+            SelectedQuestion.CorrectAnswer = CorrectAnswer;
+            SelectedQuestion.Theme = Theme;
+            SelectedQuestion.ImagePath = ImagePath;
 
-            _selectedQuestion = new Question(SelectedQuestion.Statement, SelectedQuestion.Answers, SelectedQuestion.CorrectAnswer, SelectedQuestion.Theme);
+            QuizQuestions = new ObservableCollection<Question>(CurrentQuiz.Questions);
             _quizManager.SaveQuizzes();
-            EditQuestionCommand.NotifyCanExecuteChanged();
         }
         //När ska knappen vara tryckbar?
         //När man har ändrat en property kopplat till den valda frågan dvs. statement, ett svarsalternativ eller temat && Statement != statement av nån annan fråga i det kopplade Quizzet.
         private bool CanEditQuestion()
         {
-            if (CurrentQuiz != null)
-            {
-                if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == SelectedQuestion.Statement) == null)
-                {
-                    return !string.IsNullOrEmpty(SelectedQuestion.Statement);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            //if (CurrentQuiz != null)
+            //{
+            //    if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == SelectedQuestion.Statement) == null)
+            //    {
+            //        return !string.IsNullOrEmpty(SelectedQuestion.Statement);
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            return true;
 
         }
         #endregion
@@ -105,30 +220,36 @@ namespace Labb_3.ViewModels
         #region AddCommand metoder
         private void AddQuestion()
         {
-            CurrentQuiz.AddQuestion(SelectedQuestion.Statement, SelectedQuestion.Answers, SelectedQuestion.CorrectAnswer, SelectedQuestion.Theme);
+            //Todo Fixa alla properties för så att man kan adda en fråga
+            //Ifall currentquiz inte finns i _quizManager.Quizzes lägg tillquizzet först
+            if (_quizManager.Quizzes.Contains(CurrentQuiz))
+            {
+                _quizManager.Quizzes.Add(CurrentQuiz);
+            }
+            var answers = new string[3] { Answer1, Answer2, Answer3 };
+            CurrentQuiz.AddQuestion(Statement, answers, CorrectAnswer, Theme, ImagePath);
+
+            var tempQuiz = CurrentQuiz;
+            CurrentQuiz = tempQuiz;
+
+            QuizQuestions = new ObservableCollection<Question>(CurrentQuiz.Questions);
             _quizManager.SaveQuizzes();
             AddQuestionCommand.NotifyCanExecuteChanged();
         }
         //Detta kollar ifall ett question-statement redan finns i det befintliga Quizzet.
         private bool CanAddQuestion()
         {
-            if (CurrentQuiz != null)
-            {
+            //if (CurrentQuiz != null)
+            //{
 
-                if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == SelectedQuestion.Statement) == null)
-                {
-                    return !string.IsNullOrEmpty(SelectedQuestion.Statement);
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            //    if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == SelectedQuestion.Statement) == null)
+            //    {
+            //        return !string.IsNullOrEmpty(SelectedQuestion.Statement);
+            //    }
+            //}
 
-            else
-            {
-                return false;
-            }
+            return true;
+
 
         }
         #endregion
@@ -138,37 +259,67 @@ namespace Labb_3.ViewModels
         //Ta reda på Frågans index i currentQuizz. skicka in det i metoden som finns i Quizklassen.
         private void RemoveQuestion()
         {
-            var currentQuestionIndex = CurrentQuiz.Questions.ToList().FindIndex(q => q == SelectedQuestion);
+            //Tänk att du ska ha indexet på currentQuiz från _quizmanager.Quizzes
+
+            var currentQuestionIndex = CurrentQuiz.Questions.ToList().IndexOf(SelectedQuestion);
+
             CurrentQuiz.RemoveQuestion(currentQuestionIndex);
+            if (QuizQuestions != null)
+            {
+                QuizQuestions = new ObservableCollection<Question>(CurrentQuiz.Questions);
+            }
+            //Med null så försvinner den från ListViewen.
+            //SelectedQuestion = null;
+            
             _quizManager.SaveQuizzes();
 
             //Uppdaterar min property
-            var tempAdd = CurrentQuiz;
-            CurrentQuiz = tempAdd;
+            //var tempAdd = CurrentQuiz;
+            //CurrentQuiz = tempAdd;
         }
 
         private bool CanRemoveQuestion()
         {
-            if (CurrentQuiz != null)
+            //if (CurrentQuiz != null)
+            //{
+            //    if (CurrentQuiz.Questions.ToList().Select(q => q = SelectedQuestion) == null)
+            //    {
+            //        return true;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            if (SelectedQuestion != null)
             {
-                if (CurrentQuiz.Questions.ToList().Select(q => q = SelectedQuestion) == null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
 
         }
         #endregion
 
-        //Todo Lägg till Return-knappens commands
+
+        private void AddImageToQuestion()
+        {
+            OpenFileDialog openFileImageDialog = new OpenFileDialog();
+
+            openFileImageDialog.Title = "Choose Image";
+            openFileImageDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;|All files (*.*)|*.*";
+            openFileImageDialog.FilterIndex = 1;
+
+            if (openFileImageDialog.ShowDialog() == true)
+            {
+                SelectedQuestion.ImagePath = openFileImageDialog.FileName;
+            }
+        }
+
         private void ReturnButton()
         {
             _navigationManager.CurrentViewModel = new StartViewModel(_quizManager, _navigationManager);

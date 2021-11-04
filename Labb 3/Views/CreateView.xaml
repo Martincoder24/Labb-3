@@ -9,6 +9,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="Black" />
+                <GradientStop Offset="1" Color="#FF566EBF" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -24,59 +30,111 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <TextBlock
-            Grid.ColumnSpan="4"
+            Grid.ColumnSpan="5"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="36"
+            Foreground="#FFBCD136"
             Text="Create" />
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <Label Content="Quiz Name:" />
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <Label Content="Quiz Name:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding QuizName, UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 HorizontalAlignment="Left"
                 VerticalAlignment="Stretch"
                 Command="{Binding AddQuizCommand, UpdateSourceTrigger=PropertyChanged}"
-                Content="Create Quiz" />
+                Content="Create Quiz"
+                BorderBrush="#FF4016FB"
+                Foreground="#FFBCD136" FontSize="16">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <Label Content="Statement:" />
+        <StackPanel Grid.Row="2" Grid.Column="2">
+            <Label Content="Statement:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding Statement, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Theme:" />
+            <Label Content="Theme:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding Theme, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
-        <StackPanel Grid.Row="3" Grid.Column="1">
-            <Label Content="Answer 1:" />
+        <StackPanel Grid.Row="3" Grid.Column="2">
+            <Label Content="Answer 1:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding Answer1, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Answer 2:" />
+            <Label Content="Answer 2:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding Answer2, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Answer 3:" />
+            <Label Content="Answer 3:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding Answer3, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Correct Answer:" />
+            <Label Content="Correct Answer:" Foreground="#FFBCD136" FontSize="14" />
             <ComboBox ItemsSource="{Binding AllAnswers, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}" />
-            <Button
-                HorizontalAlignment="Left"
-                Command="{Binding AddQuestionCommand}"
-                Content="Add Question" />
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    HorizontalAlignment="Left"
+                    Command="{Binding AddQuestionCommand}"
+                    Content="Add Question"
+                    BorderBrush="#FF4016FB"
+                    Foreground="#FFBCD136" FontSize="16">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button
+                    HorizontalAlignment="Left"
+                    Command="{Binding AddImageCommand}"
+                    Content="Add Image"
+                    BorderBrush="#FF4016FB"
+                    Foreground="#FFBCD136" FontSize="16">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+
         </StackPanel>
         <StackPanel />
         <ListView
             Grid.Row="2"
             Grid.RowSpan="2"
-            Grid.Column="2"
+            Grid.Column="3"
             DisplayMemberPath="Statement"
             ItemsSource="{Binding CurrentQuiz.Questions, UpdateSourceTrigger=PropertyChanged}" />
+        <Image
+            Grid.Row="2"
+            Grid.Column="4"
+            Source="{Binding ImagePath}" />
 
         <TextBlock
             Grid.Row="1"
-            Grid.Column="2"
+            Grid.Column="3"
             VerticalAlignment="Bottom"
-            Text="Current Quiz questions:" />
+            Foreground="#FFBCD136"
+            Text="Current Quiz questions:" FontSize="18" />
         <Button
             Grid.Row="3"
-            Grid.Column="3"
+            Grid.Column="1"
+            Width="90"
+            Height="75"
+            Margin="30"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Command="{Binding ReturnCommand}"
-            Content="Return" />
+            Content="Return"
+            BorderBrush="#FF4016FB"
+            Foreground="#FFBCD136" FontSize="16">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" />
+                    <GradientStop Offset="1" Color="#FFB941A9" />
+                </LinearGradientBrush>
+            </Button.Background>
+            </Button>
     </Grid>
 </UserControl>

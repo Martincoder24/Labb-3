@@ -50,11 +50,11 @@ namespace Labb_3.Managers
         {
             var questionList = new ObservableCollection<Question>();
             //Här addar jag frågorna
-            questionList.Add(new Question("Who is this singer?", new string[3] { "Madonna", "Beyonce", "Britney Spears" }, 1, "music"));
-            questionList.Add(new Question("What is the capital city in Belgium?", new string[3] { "Brussel", "Paris", "Amsterdam" }, 1, "geography"));
-            questionList.Add(new Question("In which country can I find Mount Fiji?", new string[3] { "France", "Japan", "China" }, 2, "geography"));
-            questionList.Add(new Question("Which singer/group is responsible for the hit song - Somebody To You?", new string[3] { "Adele", "Nickelback", "Banners" }, 3, "music"));
-            questionList.Add(new Question("What is the male version of a cow?", new string[3] { "Man Cow", "Bill", "Bull" }, 3, "animals"));
+            questionList.Add(new Question("Who is this singer?", new string[3] { "Madonna", "Beyonce", "Britney Spears" }, 0, "music", null));
+            questionList.Add(new Question("What is the capital city in Belgium?", new string[3] { "Brussel", "Paris", "Amsterdam" }, 0, "geography", null));
+            questionList.Add(new Question("In which country can I find Mount Fiji?", new string[3] { "France", "Japan", "China" }, 1, "geography", null));
+            questionList.Add(new Question("Which singer/group is responsible for the hit song - Somebody To You?", new string[3] { "Adele", "Nickelback", "Banners" }, 2, "music", null));
+            questionList.Add(new Question("What is the male version of a cow?", new string[3] { "Man Cow", "Bill", "Bull" }, 2, "animals", null));
             Quizzes.Add(new Quiz(questionList, "DefaultQuiz"));
             foreach (var quiz in Quizzes)
             {

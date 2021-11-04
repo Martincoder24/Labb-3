@@ -11,7 +11,7 @@ namespace Labb_3.ViewModels
 {
     public class StartViewModel : ObservableObject
     {
-        //Todo Basically en meny av knappar med implementerad navigation
+        
         private readonly QuizManager _quizManager;
         private readonly NavigationManager _navigationManager;
         public RelayCommand PlayButtonCommand { get; }

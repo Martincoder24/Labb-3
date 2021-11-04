@@ -9,7 +9,14 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="Black" />
+                <GradientStop Offset="1" Color="#FF566EBF" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -18,79 +25,137 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <TextBlock
             Grid.ColumnSpan="4"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="36"
+            Foreground="#FFBCD136"
             Text="Edit" />
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <Label Content="Quiz Name:" />
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <Label Content="Quiz Name:" Foreground="#FFBCD136" FontSize="14" />
             <ComboBox
                 DisplayMemberPath="Title"
                 ItemsSource="{Binding ListOfQuizzes, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{Binding CurrentQuiz, UpdateSourceTrigger=PropertyChanged}" />
 
-            <Label Content="Quiz Title:" />
+            <Label Content="Quiz Title:" Foreground="#FFBCD136" FontSize="14" />
             <TextBox Text="{Binding CurrentQuiz.Title, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <Label Content="Statement:" />
-            <TextBox Text="{Binding SelectedQuestion.Statement, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Theme:" />
-            <TextBox Text="{Binding SelectedQuestion.Theme, UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Answer 1:" />
-            <TextBox Text="{Binding SelectedQuestion.Answers[0], UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Answer 2:" />
-            <TextBox Text="{Binding SelectedQuestion.Answers[1], UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Answer 3:" />
-            <TextBox Text="{Binding SelectedQuestion.Answers[2], UpdateSourceTrigger=PropertyChanged}" />
-            <Label Content="Correct Answer:" />
-            <ComboBox ItemsSource="{Binding SelectedQuestion.Answers, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding SelectedQuestion.CorrectAnswer, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-        <StackPanel Grid.Row="3" Grid.Column="1">
+            <Label Content="Statement:" Foreground="#FFBCD136" FontSize="14" />
+            <TextBox Text="{Binding Statement, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="Theme:" Foreground="#FFBCD136" FontSize="14" />
+            <TextBox Text="{Binding Theme, UpdateSourceTrigger=PropertyChanged}" />
 
-            <StackPanel Orientation="Horizontal">
-                <Button
-                    HorizontalAlignment="Left"
-                    Command="{Binding EditQuestionCommand}"
-                    Content="Edit Question" />
-                <Button
-                    HorizontalAlignment="Left"
-                    Command="{Binding AddQuestionCommand}"
-                    Content="Add Question" />
-                <Button
-                    HorizontalAlignment="Left"
-                    Command="{Binding RemoveQuestionCommand}"
-                    Content="Remove Question" />
-            </StackPanel>
-
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="2">
+            <Label Content="Answer 1:" Foreground="#FFBCD136" FontSize="14" />
+            <TextBox Text="{Binding Answer1, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="Answer 2:" Foreground="#FFBCD136" FontSize="14" />
+            <TextBox Text="{Binding Answer2, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="Answer 3:" Foreground="#FFBCD136" FontSize="14" />
+            <TextBox Text="{Binding Answer3, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="Correct Answer:" Foreground="#FFBCD136" FontSize="14" />
+            <ComboBox ItemsSource="{Binding AllAnswers, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="{Binding CorrectAnswer, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                HorizontalAlignment="Left"
+                BorderBrush="#FF4016FB"
+                Command="{Binding EditQuestionCommand}"
+                Content="Edit Question"
+                Foreground="#FFBCD136" FontSize="16">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button
+                HorizontalAlignment="Left"
+                BorderBrush="#FF4016FB"
+                Command="{Binding AddQuestionCommand}"
+                Content="Add Question"
+                Foreground="#FFBCD136" FontSize="16" >
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button
+                HorizontalAlignment="Left"
+                BorderBrush="#FF4016FB"
+                Command="{Binding RemoveQuestionCommand}"
+                Content="Remove Question"
+                Foreground="#FFBCD136" FontSize="16" >
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button
+                BorderBrush="#FF4016FB"
+                Command="{Binding AddImageCommand}"
+                Content="Add Image"
+                Foreground="#FFBCD136" FontSize="16" >
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
         <StackPanel />
-        <ListView
-            Grid.Row="2"
-            Grid.Column="2"
-            DisplayMemberPath="Statement"
-            ItemsSource="{Binding CurrentQuiz.Questions, UpdateSourceTrigger=PropertyChanged}"
-            SelectedItem="{Binding SelectedQuestion, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="2"
-            VerticalAlignment="Bottom"
-            FontSize="18"
-            Text="Current Quiz questions:" />
-        <Button
+        <StackPanel Grid.Row="4" Grid.Column="3">
+            <TextBlock
+                VerticalAlignment="Bottom"
+                FontSize="18"
+                Foreground="#FFBCD136"
+                Text="Current Quiz questions:" />
+            <ListView
+                Height="150"
+                DisplayMemberPath="Statement"
+                ItemsSource="{Binding QuizQuestions, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedQuestion, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <Image
             Grid.Row="2"
             Grid.Column="3"
+            Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}" />
+        <Button
+            Grid.Row="4"
+            Grid.Column="1"
+            Width="90"
+            Height="75"
+            Margin="30"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center"
+            BorderBrush="#FF4016FB"
             Command="{Binding ReturnCommand}"
             Content="Return"
-            FontSize="16" />
+            FontSize="16"
+            Foreground="#FFBCD136" >
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" />
+                    <GradientStop Offset="1" Color="#FFB941A9" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
     </Grid>
 </UserControl>

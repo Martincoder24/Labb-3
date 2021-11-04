@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Labb_3.Managers;
 using Labb_3.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -13,14 +14,27 @@ namespace Labb_3.ViewModels
 {
     public class PlayModeViewModel : ObservableObject
     {
-        //Todo Denna vymodell skall innehålla frågan och alla svarsalternativ samt en return-knapp.
+        
         //Även en poängräknare
         //en bild länkad till varje fråga
         private readonly QuizManager _quizManager;
         private readonly NavigationManager _navigationManager;
+        
+        private Quiz _currentQuiz;
 
-        private readonly Quiz _currentQuiz;
-        private readonly Question _currentQuestion;
+        public Quiz CurrentQuiz
+        {
+            get => _currentQuiz;
+            set => SetProperty(ref _currentQuiz , value);
+        }
+        
+        private Question _currentQuestion;
+
+        public Question CurrentQuestion
+        {
+            get =>  _currentQuestion;
+            set =>  SetProperty(ref _currentQuestion, value);
+        }
 
         //Properties för mina counters; CorrectAnswers, TotalAnswers
         private int _correctAnswerCounter;
@@ -28,7 +42,7 @@ namespace Labb_3.ViewModels
         public int CorrectAnswerCounter
         {
             get => _correctAnswerCounter;
-            set => SetProperty(ref _correctAnswerCounter , value);
+            set => SetProperty(ref _correctAnswerCounter, value);
         }
         private int _totalAnswerCounter;
         //Tanke: antingen så har man att man ser totala antalet frågor från början eller
@@ -58,50 +72,91 @@ namespace Labb_3.ViewModels
             _quizManager = quizManager;
             _navigationManager = navigationManager;
             _currentQuiz = updatedQuiz;
-            _currentQuestion = updatedQuiz.GetRandomQuestion();
-            //Här skall jag ta bort den befintliga frågan genom att få reda på indexet av frågan i mitt quiz
-            RemoveAlreadyAskedQuestion();
-            //Sätt currentQuestion efter att ha använt metoden RandomQuestion på _currentQuiz
-
+            CurrentQuestion = _currentQuiz.GetRandomQuestion();
             ExitQuizCommand = new RelayCommand(ExitQuiz);
-            //AnswerOneCommand = new RelayCommand();
-            //AnswerTwoCommand = new RelayCommand();
-            //AnswerThreeCommand = new RelayCommand();
+            AnswerOneCommand = new RelayCommand(AnswerOneSelection);
+            AnswerTwoCommand = new RelayCommand(AnswerTwoSelection);
+            AnswerThreeCommand = new RelayCommand(AnswerThreeSelection);
         }
 
         private void AnswerOneSelection()
         {
-            //TotalAnswer countern ska plussas
-            TotalAnswerCounter++;
+
             //IF man har valt korrekt svar så ska correctanswer countern plussas
-            if ( _currentQuestion.CorrectAnswer == 0)
+            if (_currentQuestion.CorrectAnswer == 0)
             {
                 CorrectAnswerCounter++;
             }
-            //Ta bort bort den nuvarande frågan och randomgenera en till
-            RemoveAlreadyAskedQuestion();
-            if (_currentQuiz.Questions.Count > 0)
+            //TotalAnswer countern ska plussas
+            TotalAnswerCounter++;
+
+            if (_currentQuiz.Questions.Count > TotalAnswerCounter)
             {
-                _currentQuiz.GetRandomQuestion();
+                CurrentQuestion =_currentQuiz.GetRandomQuestion();
             }
             else
             {
-
+                //Messagebox ska komma upp o ge en sitt score o sen ska man slussas vidare till startvyn.
+                if (MessageBox.Show($"Your score is {CorrectAnswerCounter}/{TotalAnswerCounter}!", "Results") ==
+                    MessageBoxResult.OK)
+                {
+                    //När man klickar på OK så ska an tillbaka till startmenyn
+                    ExitQuiz();
+                }
             }
-            
-            //Slumpa fram nästa fråga.
         }
-
-        private void RemoveAlreadyAskedQuestion()
+        private void AnswerTwoSelection()
         {
-            var index = _currentQuiz.Questions.ToList().IndexOf(_currentQuestion);
-            _currentQuiz.RemoveQuestion(index);
+
+            //Om man har valt korrekt svar så ska correctanswer countern plussas
+            if (_currentQuestion.CorrectAnswer == 1)
+            {
+                CorrectAnswerCounter++;
+            }
+            //TotalAnswer countern ska plussas
+            TotalAnswerCounter++;
+
+            if (_currentQuiz.Questions.Count > TotalAnswerCounter)
+            {
+                CurrentQuestion = _currentQuiz.GetRandomQuestion();
+            }
+            else
+            {
+                //Messagebox ska komma upp o ge en sitt score o sen ska man slussas vidare till startvyn.
+                if (MessageBox.Show($"Your score is {CorrectAnswerCounter}/{TotalAnswerCounter}!", "Results") ==
+                    MessageBoxResult.OK)
+                {
+                    //När man klickar på OK så ska an tillbaka till startmenyn
+                    ExitQuiz();
+                }
+            }
         }
-        
-        //Todo Jag måste ha en metod som ändrar frågan till nästa fråga med sina resp. svarsalternativ.
+        private void AnswerThreeSelection()
+        {
 
-        //Todo Jag måste se till att första frågan från Quizzet är på plats vid tryck av Lets play sen innan.
+            //IF man har valt korrekt svar så ska correctanswer countern plussas
+            if (_currentQuestion.CorrectAnswer == 2)
+            {
+                CorrectAnswerCounter++;
+            }
+            //TotalAnswer countern ska plussas
+            TotalAnswerCounter++;
 
+            if (_currentQuiz.Questions.Count > TotalAnswerCounter)
+            {
+                CurrentQuestion = _currentQuiz.GetRandomQuestion();
+            }
+            else
+            {
+                //Messagebox ska komma upp o ge en sitt score o sen ska man slussas vidare till startvyn.
+                if (MessageBox.Show($"Your score is {CorrectAnswerCounter}/{TotalAnswerCounter}!", "Results") ==
+                    MessageBoxResult.OK)
+                {
+                    //När man klickar på OK så ska an tillbaka till startmenyn
+                    ExitQuiz();
+                }
+            }
+        }
         private void ExitQuiz()
         {
             _navigationManager.CurrentViewModel = new StartViewModel(_quizManager, _navigationManager);

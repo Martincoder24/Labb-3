@@ -9,6 +9,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="Black" />
+                <GradientStop Offset="1" Color="#FF566EBF" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -23,47 +29,96 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             FontSize="36"
-            Text="Quiz Selector:" />
+            Text="Quiz Selector:" Foreground="#FFBCD136" />
         <StackPanel
             Grid.Row="1"
             Grid.RowSpan="2"
             Grid.Column="1">
-            <TextBlock Text="Select your Quiz:" HorizontalAlignment="Center" FontSize="18"/>
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="18"
+                Text="Select your Quiz:" Foreground="#FFBCD136"  />
             <ComboBox
                 DisplayMemberPath="Title"
                 ItemsSource="{Binding ListOfQuizzes, UpdateSourceTrigger=PropertyChanged}"
                 SelectedItem="{Binding SelectedQuiz, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock HorizontalAlignment="Center" Text="Themes:" FontSize="18" />
-            <ComboBox
-                ItemsSource="{Binding SelectedQuiz.Themes, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="18"
+                Text="Themes:" Foreground="#FFBCD136" />
+            <ComboBox ItemsSource="{Binding SelectedQuiz.Themes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <Button Command="{Binding AddThemeCommand}" Content="Add Theme" />
-                <Button Command="{Binding RemoveThemeCommand}" Content="Remove Theme" />
+                <Button
+                    BorderBrush="#FF4016FB"
+                    Command="{Binding AddThemeCommand}"
+                    Content="Add Theme"
+                    Foreground="#FFBCD136" FontSize="16" >
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button
+                    BorderBrush="#FF4016FB"
+                    Command="{Binding RemoveThemeCommand}"
+                    Content="Remove Theme"
+                    Foreground="#FFBCD136" FontSize="16" >
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
             </StackPanel>
 
         </StackPanel>
-        <TextBlock Grid.Column="2" Text="Chosen Themes:" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="16" />
+        <TextBlock
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            FontSize="20"
+            Text="Chosen Themes:" Foreground="#FFBCD136" />
         <ListView
             Grid.Row="1"
             Grid.Column="2"
             ItemsSource="{Binding ThemesOfChoice, UpdateSourceTrigger=PropertyChanged}"
-            SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged}"/>
+            SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged}" />
         <Button
             Grid.Row="2"
             Width="90"
             Height="75"
             Margin="0,0,90,0"
+            BorderBrush="#FF4016FB"
             Command="{Binding ReturnCommand}"
-            Content="Return" />
+            Content="Return"
+            Foreground="#FFBCD136" FontSize="16" >
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" />
+                    <GradientStop Offset="1" Color="#FFB941A9" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <Button
             Grid.Row="2"
             Grid.Column="2"
             Width="90"
             Height="75"
             Margin="0,0,0,0"
+            BorderBrush="#FF4016FB"
             Command="{Binding LetsPlayCommand}"
-            Content="Let's play!" />
+            Content="Let's play!"
+            Foreground="#FFBCD136" FontSize="16" >
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" />
+                    <GradientStop Offset="1" Color="#FFB941A9" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
 
     </Grid>
 </UserControl>

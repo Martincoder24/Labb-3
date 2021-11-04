@@ -11,6 +11,7 @@ using Labb_3.Managers;
 using Labb_3.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Win32;
 
 namespace Labb_3.ViewModels
 {
@@ -46,6 +47,13 @@ namespace Labb_3.ViewModels
             } 
         }
 
+        private string _imagePath;
+
+        public string ImagePath
+        {
+            get => _imagePath;
+            set => SetProperty(ref _imagePath, value);
+        }
         private string _answer1;
 
         public string Answer1
@@ -107,25 +115,9 @@ namespace Labb_3.ViewModels
             set
             {
                 SetProperty(ref _currentQuiz, value);
-                //if (_currentQuiz.Questions != null && _currentQuiz != null)
-                //{
-                //    _currentQuiz.Questions.Clear();
-                //    foreach (var question in CurrentQuiz.Questions)
-                //    {
-                //        _currentQuiz.Questions.Add(question);
-                //    }
-                //}
             } 
         }
-        //private ObservableCollection<Question> _currentQuizQuestions = new();
-
-        //public ObservableCollection<Question> CurrentQuizQuestions
-        //{
-        //    get => _currentQuizQuestions;
-        //    set => SetProperty(ref _currentQuizQuestions, value);
-        //}
-
-
+       
         private ObservableCollection<string> _allAnswers = new ObservableCollection<string>() { "", "", "" };
 
         public ObservableCollection<string> AllAnswers
@@ -140,8 +132,19 @@ namespace Labb_3.ViewModels
         //Skapa en Command-bindning för "create quiz" knappen som skall skapa en quiz-list<Questions>
         public RelayCommand AddQuizCommand { get;}
         public RelayCommand AddQuestionCommand { get; }
+        public RelayCommand AddImageCommand { get; }
 
         public RelayCommand ReturnCommand { get; }
+        public CreateViewModel(QuizManager quizManager, NavigationManager navigationManager)
+        {
+            _quizManager = quizManager;
+            _navigationManager = navigationManager;
+            AddQuizCommand = new(CreateQuiz, CanCreateQuiz);
+            AddQuestionCommand = new(AddQuestionToQuiz, CanAddQuestion);
+            AddImageCommand = new RelayCommand(AddImageToQuestion);
+            ReturnCommand = new RelayCommand(ReturnButton);
+            PropertyChanged += OnViewModelPropertyChanged;
+        }
 
         //Skapa ett nytt quiz som skall läggas till i min QuizManager
         #region CreateQuiz Command-metoder
@@ -179,8 +182,9 @@ namespace Labb_3.ViewModels
         private void AddQuestionToQuiz()
         {
             var answers = new[] { _answer1, _answer2, _answer3 };
-            var question = new Question(_statement, answers, _correctAnswer, _theme);
-            CurrentQuiz.AddQuestion(Statement, answers, CorrectAnswer, Theme);
+            var question = new Question(_statement, answers, _correctAnswer, _theme, _imagePath);
+            CurrentQuiz.AddQuestion(Statement, answers, CorrectAnswer, Theme, ImagePath);
+
             //CreatedQuiz.Questions.Add(question);
             //Addera temat i en lista av teman för quizzet
             if (!CurrentQuiz.Themes.Contains(question.Theme))
@@ -209,20 +213,26 @@ namespace Labb_3.ViewModels
 
         }
         #endregion
+        
+        private void AddImageToQuestion()
+        {
+            OpenFileDialog openFileImageDialog = new OpenFileDialog();
+
+            openFileImageDialog.Title = "Choose Image";
+            openFileImageDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;|All files (*.*)|*.*";
+            openFileImageDialog.FilterIndex = 1;
+
+            if (openFileImageDialog.ShowDialog() == true)
+            {
+                ImagePath = openFileImageDialog.FileName;
+            }
+        }
         private void ReturnButton()
         {
             _navigationManager.CurrentViewModel = new StartViewModel(_quizManager, _navigationManager);
         }
 
-        public CreateViewModel(QuizManager quizManager, NavigationManager navigationManager)
-        {
-           _quizManager = quizManager;
-           _navigationManager = navigationManager;
-           AddQuizCommand = new(CreateQuiz, CanCreateQuiz);
-           AddQuestionCommand = new (AddQuestionToQuiz, CanAddQuestion);
-           ReturnCommand = new RelayCommand(ReturnButton);
-           PropertyChanged += OnViewModelPropertyChanged;
-        }
+       
 
        
 

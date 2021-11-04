@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -15,7 +16,6 @@ namespace Labb_3.Models
         {
             get => _statement;
             set => _statement = value;
-
         }
 
         private string[] _answers;
@@ -41,14 +41,27 @@ namespace Labb_3.Models
             set => _theme = value;
         }
 
+        public bool IsAsked { get; set; }
 
-        public Question(string statement, string[] answers, int correctAnswer, string theme)
+        //Todo Gör en image property som skall länkas med varje Question
+        private string _imagePath;
+
+        public string ImagePath
+        {
+            get => _imagePath;
+            set => _imagePath = value;
+        }
+    
+        
+        public Question(string statement, string[] answers, int correctAnswer, string theme, string imagePath)
         {
             _statement = statement;
             _answers = answers;
             _correctAnswer = correctAnswer;
             _theme = theme;
+            _imagePath = imagePath;
         }
 
+        
     }
 }

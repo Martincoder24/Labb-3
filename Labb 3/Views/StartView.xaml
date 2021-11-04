@@ -9,6 +9,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="Black" />
+                <GradientStop Offset="1" Color="#FF566EBF" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -24,7 +30,9 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="36"
+            Foreground="#FFBCD136"
             Text="Start" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Text="QUIZ TIME!" FontSize="72" Foreground="#FFBCD136" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Century"/>
         <StackPanel
             Grid.Row="2"
             Grid.Column="0"
@@ -38,24 +46,51 @@
                 Margin="30"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                Content="PLAY" 
-                Command="{Binding PlayButtonCommand}"/>
+                BorderBrush="#FF4016FB"
+                Command="{Binding PlayButtonCommand}"
+                Content="PLAY"
+                Foreground="#FFBCD136" FontWeight="Bold">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
             <Button
                 Width="100"
                 Height="100"
                 Margin="30"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
+                BorderBrush="#FF4016FB"
+                Command="{Binding CreateButtonCommand}"
                 Content="CREATE"
-                Command="{Binding CreateButtonCommand}"/>
+                Foreground="#FFBCD136" FontWeight="Bold">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
             <Button
                 Width="100"
                 Height="100"
                 Margin="30"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
+                BorderBrush="#FF4016FB"
+                Command="{Binding EditButtonCommand}"
                 Content="EDIT"
-                Command="{Binding EditButtonCommand}"/>
+                Foreground="#FFBCD136" FontWeight="Bold">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Black" />
+                        <GradientStop Offset="1" Color="#FFB941A9" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

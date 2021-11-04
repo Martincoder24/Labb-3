@@ -9,6 +9,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="Black" />
+                <GradientStop Offset="1" Color="#FF566EBF" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -23,32 +29,59 @@
             Grid.Column="1"
             HorizontalAlignment="Center"
             FontSize="36"
-            Text="PLAYMODE" />
-        <Image Grid.Row="1" Grid.Column="1" />
+            Text="PLAYMODE" Foreground="#FFBCD136"/>
+        <Image
+            Grid.Row="1"
+            Grid.Column="1"
+            Source="{Binding CurrentQuestion.ImagePath, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel Grid.Row="2" Grid.Column="1">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="24"
-                Text="{Binding CurrentQuiz.Statement, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding CurrentQuestion.Statement, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFBCD136"/>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button
                     Width="90"
                     Height="75"
-                    Margin="30"
-                    Content="{Binding CurrentQuestion.Answers[0], UpdateSourceTrigger=PropertyChanged}"
-                    Command ="{Binding AnswerOneButton}"/>
+                    Margin="30" BorderBrush="#FF4016FB"
+                    Foreground="#FFBCD136"
+                    Command="{Binding AnswerOneCommand}"
+                    Content="{Binding CurrentQuestion.Answers[0], UpdateSourceTrigger=PropertyChanged}" FontSize="16" >
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
                 <Button
                     Width="90"
                     Height="75"
-                    Margin="30"
-                    Content="{Binding CurrentQuestion.Answers[1], UpdateSourceTrigger=PropertyChanged}"
-                    Command ="{Binding AnswerTwoButton}"/>
+                    Margin="30" BorderBrush="#FF4016FB"
+                    Foreground="#FFBCD136"
+                    Command="{Binding AnswerTwoCommand}"
+                    Content="{Binding CurrentQuestion.Answers[1], UpdateSourceTrigger=PropertyChanged}" FontSize="16" >
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
                 <Button
                     Width="90"
                     Height="75"
-                    Margin="30"
-                    Content="{Binding CurrentQuestion.Answers[2], UpdateSourceTrigger=PropertyChanged}"
-                    Command ="{Binding AnswerThreeButton}"/>
+                    Margin="30" BorderBrush="#FF4016FB"
+                    Foreground="#FFBCD136"
+                    Command="{Binding AnswerThreeCommand}"
+                    Content="{Binding CurrentQuestion.Answers[2], UpdateSourceTrigger=PropertyChanged}" FontSize="16" >
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="Black" />
+                            <GradientStop Offset="1" Color="#FFB941A9" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
             </StackPanel>
         </StackPanel>
         <Button
@@ -56,13 +89,22 @@
             Width="90"
             Height="75"
             Margin="30"
-            Content="ExitQuiz" />
+            BorderBrush="#FF4016FB"
+            Content="ExitQuiz"
+            Foreground="#FFBCD136" FontSize="16" >
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" />
+                    <GradientStop Offset="1" Color="#FFB941A9" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <StackPanel Grid.Row="1" Grid.Column="2">
-            <TextBlock Text="Correct Answers:" />
+            <TextBlock Text="Correct Answers:" Foreground="#FFBCD136" FontSize="16"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding CorrectAnswerCounter, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock Text="/" />
-                <TextBlock Text="{Binding TotalAnswerCounter, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="{Binding CorrectAnswerCounter, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFBCD136" FontSize="16"/>
+                <TextBlock Text="/" Foreground="#FFBCD136" FontSize="16"/>
+                <TextBlock Text="{Binding TotalAnswerCounter, UpdateSourceTrigger=PropertyChanged}" Foreground="#FFBCD136" FontSize="16"/>
             </StackPanel>
 
         </StackPanel>
