@@ -316,7 +316,7 @@ namespace Labb_3.ViewModels
 
             if (openFileImageDialog.ShowDialog() == true)
             {
-                SelectedQuestion.ImagePath = openFileImageDialog.FileName;
+                ImagePath = openFileImageDialog.FileName;
             }
         }
 
