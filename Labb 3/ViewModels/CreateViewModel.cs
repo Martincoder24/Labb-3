@@ -15,7 +15,7 @@ using Microsoft.Win32;
 
 namespace Labb_3.ViewModels
 {
-    public class CreateViewModel: ObservableObject
+    public class CreateViewModel : ObservableObject
     {
         private readonly QuizManager _quizManager;
         private readonly NavigationManager _navigationManager;
@@ -33,7 +33,7 @@ namespace Labb_3.ViewModels
                 SetProperty(ref _quizName, value);
                 AddQuizCommand.NotifyCanExecuteChanged();
 
-            } 
+            }
         }
         private string _statement;
 
@@ -44,7 +44,7 @@ namespace Labb_3.ViewModels
             {
                 SetProperty(ref _statement, value);
                 AddQuestionCommand.NotifyCanExecuteChanged();
-            } 
+            }
         }
 
         private string _imagePath;
@@ -105,7 +105,7 @@ namespace Labb_3.ViewModels
                 SetProperty(ref _correctAnswer, value);
                 AddQuestionCommand.NotifyCanExecuteChanged();
             }
-            
+
         }
         private Quiz _currentQuiz = new Quiz(new ObservableCollection<Question>(), "TEMP");
 
@@ -115,9 +115,9 @@ namespace Labb_3.ViewModels
             set
             {
                 SetProperty(ref _currentQuiz, value);
-            } 
+            }
         }
-       
+
         private ObservableCollection<string> _allAnswers = new ObservableCollection<string>() { "", "", "" };
 
         public ObservableCollection<string> AllAnswers
@@ -126,11 +126,11 @@ namespace Labb_3.ViewModels
             set => OnPropertyChanged(nameof(AllAnswers));
         }
 
-        
+
         #endregion
 
         //Skapa en Command-bindning för "create quiz" knappen som skall skapa en quiz-list<Questions>
-        public RelayCommand AddQuizCommand { get;}
+        public RelayCommand AddQuizCommand { get; }
         public RelayCommand AddQuestionCommand { get; }
         public RelayCommand AddImageCommand { get; }
 
@@ -206,14 +206,12 @@ namespace Labb_3.ViewModels
             {
                 return !string.IsNullOrEmpty(Statement);
             }
-            else
-            {
-                return false;
-            }
+            return false;
+
 
         }
         #endregion
-        
+
         private void AddImageToQuestion()
         {
             OpenFileDialog openFileImageDialog = new OpenFileDialog();
@@ -232,13 +230,13 @@ namespace Labb_3.ViewModels
             _navigationManager.CurrentViewModel = new StartViewModel(_quizManager, _navigationManager);
         }
 
-       
 
-       
+
+
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(CurrentQuiz) || e.PropertyName == nameof(QuizName) 
+            if (e.PropertyName == nameof(CurrentQuiz) || e.PropertyName == nameof(QuizName)
                )
             {
                 AddQuizCommand.NotifyCanExecuteChanged();
@@ -250,7 +248,7 @@ namespace Labb_3.ViewModels
             }
         }
         //När Quizet är skapat så skall submit-knappen bli utgråad och namnet på quiz-listan skall stå kvar.
-        
+
         //Skapa en bindning till frågan och dess svar. Samt att markera vilket alternativ som är rätt svar.
         //Lägg sedan till en bindning för tema på frågan också
         //Skapa ett command  för en knapp som skapar frågan m.a.p bindningen till frågor och svar.

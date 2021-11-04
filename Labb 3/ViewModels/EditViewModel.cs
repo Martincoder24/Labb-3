@@ -192,25 +192,10 @@ namespace Labb_3.ViewModels
             QuizQuestions = new ObservableCollection<Question>(CurrentQuiz.Questions);
             _quizManager.SaveQuizzes();
         }
-        //När ska knappen vara tryckbar?
-        //När man har ändrat en property kopplat till den valda frågan dvs. statement, ett svarsalternativ eller temat && Statement != statement av nån annan fråga i det kopplade Quizzet.
+        
         private bool CanEditQuestion()
         {
-            //if (CurrentQuiz != null)
-            //{
-            //    if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == SelectedQuestion.Statement) == null)
-            //    {
-            //        return !string.IsNullOrEmpty(SelectedQuestion.Statement);
-            //    }
-            //    else
-            //    {
-            //        return false;
-            //    }
-            //}
-            //else
-            //{
-            //    return false;
-            //}
+            
             return true;
 
         }
@@ -239,16 +224,16 @@ namespace Labb_3.ViewModels
         //Detta kollar ifall ett question-statement redan finns i det befintliga Quizzet.
         private bool CanAddQuestion()
         {
-            //if (CurrentQuiz != null)
-            //{
+            if (CurrentQuiz != null)
+            {
 
-            //    if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == SelectedQuestion.Statement) == null)
-            //    {
-            //        return !string.IsNullOrEmpty(SelectedQuestion.Statement);
-            //    }
-            //}
+                if (CurrentQuiz.Questions.FirstOrDefault(q => q.Statement == Statement) == null)
+                {
+                    return !string.IsNullOrEmpty(Statement);
+                }
+            }
 
-            return true;
+            return false;
 
 
         }
@@ -272,10 +257,6 @@ namespace Labb_3.ViewModels
             //SelectedQuestion = null;
             
             _quizManager.SaveQuizzes();
-
-            //Uppdaterar min property
-            //var tempAdd = CurrentQuiz;
-            //CurrentQuiz = tempAdd;
         }
 
         private bool CanRemoveQuestion()
