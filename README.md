@@ -1,4 +1,5 @@
 # - Quiz app -
+![image](https://user-images.githubusercontent.com/80486477/156167757-d7a09365-af97-446a-8881-4e41bc28a57e.png)
 
 ## Description:
 
