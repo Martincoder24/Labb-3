@@ -1,6 +1,6 @@
 # - Quiz app -
 
-##Description:
+## Description:
 
 This is a quiz app made in .NET WPF were you start with a default quiz of 5 questions with images.
 This application allows creating new quizes, adding, editing and removing questions.
